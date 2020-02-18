@@ -1,0 +1,21 @@
+import requests
+from time import sleep
+from datetime import datetime
+
+last_message_time = 0
+while True:
+    response = requests.get(
+        'http://127.0.0.1:5000/history',
+        params={'after': last_message_time}
+    )
+    date = response.json()
+    for mes in date['messages']:
+        beauty_time = datetime.fromtimestamp(mes['time'])
+        beauty_time = beauty_time.strftime('%Y/%m/%d %H:%M:%S')
+
+        print(beauty_time, mes['username'])
+        print(mes['text'])
+        print()
+        last_message_time = mes['time']
+
+    sleep(1)
