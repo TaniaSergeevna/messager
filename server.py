@@ -1,5 +1,5 @@
 from flask import Flask, request
-import time
+import time, datetime
 
 app = Flask(__name__)
 messages = [
@@ -8,27 +8,22 @@ messages = [
 ]
 
 users = {
-    # username: password
+    # 'username': 'password'
     'Mary': '999',
     'Jack': '123'
 }
 
 
-# @app.route("/")
-# def hello():
-#     return "Hello,World!"
-#
-#
-# @app.route("/status")
-# def status():
-#     tim = datetime.datetime.now()
-#     return {
-#         'status': True,
-#         "time": "{0}:{1}:{2}".format(tim.hour, tim.minute, tim.second)
-#     }
+@app.route("/")
+def status():
+    tim = datetime.datetime.now()
+    return {
+        'status': True,
+        "time": "{0}:{1}:{2}".format(tim.hour, tim.minute, tim.second)
+    }
 
 
-@app.route("/history")
+@app.route("/history", methods=["GET"])
 def history():
     after = float(request.args['after'])
 
@@ -62,4 +57,5 @@ def send():
     return {'ok': True}
 
 
-app.run()
+if __name__ == "__main__":
+    app.run()
